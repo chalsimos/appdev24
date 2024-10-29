@@ -29,7 +29,8 @@
         <td>{{ user.gender }}</td>
         <td>{{ user.address }}</td>
         <td>{{ user.phone }}</td>
-        <td><button @click="deleteUser(user._id)">delete</button></td>
+        <td><button @click="deleteUser(user._id)">delete</button>
+        <button @click="editUser(user)">edit</button></td>
     </tr>
 </table>
     </div>
@@ -65,6 +66,9 @@ export default {
             await axios.post('http://localhost:5000/api/users', this.user);
             this.user = {name:'', age:'', gender:'', address:'', phone:''};
             this.getUsers();
+        },
+        editUser(user){
+            this.user = { ...user};
         }
     }
 }
