@@ -14,7 +14,22 @@
             <input type="text" v-model="user.phone" placeholder="enter your phone" required>
             <button type="submit">add user</button>
         </form>
-
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>age</th>
+        <th>gender</th>
+        <th>address</th>
+        <th>phone no.</th>
+    </tr>
+    <tr v-for="user in users" :key="users._id">
+        <td>{{ user.name }}</td>
+        <td>{{ user.age }}</td>
+        <td>{{ user.gender }}</td>
+        <td>{{ user.address }}</td>
+        <td>{{ user.phone }}</td>
+    </tr>
+</table>
     </div>
 </template>
 <script>
@@ -22,6 +37,7 @@ import axios from 'axios'
 export default {
     data(){
         return {
+            users:[],
             user: {
                 name:'',
                 age:'',
@@ -31,11 +47,18 @@ export default {
             }
         };
     },
+    mounted(){
+        this.getUsers();
+    },
     methods:{
+        async getUsers(){
+            const res = await axios.get('http://localhost:5000/api/users');
+            this.users = res.data;
+        },
         async createUser(){
             await axios.post('http://localhost:5000/api/users', this.user);
             this.user = {name:'', age:'', gender:'', address:'', phone:''};
-            
+            this.getUsers();
         }
     }
 }
