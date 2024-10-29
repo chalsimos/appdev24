@@ -21,6 +21,7 @@
         <th>gender</th>
         <th>address</th>
         <th>phone no.</th>
+        <th>action</th>
     </tr>
     <tr v-for="user in users" :key="users._id">
         <td>{{ user.name }}</td>
@@ -28,6 +29,7 @@
         <td>{{ user.gender }}</td>
         <td>{{ user.address }}</td>
         <td>{{ user.phone }}</td>
+        <td><button @click="deleteUser(user._id)">delete</button></td>
     </tr>
 </table>
     </div>
@@ -51,6 +53,10 @@ export default {
         this.getUsers();
     },
     methods:{
+        async deleteUser(id){
+            await axios.delete(`http://localhost:5000/api/users/${id}`);
+            this.getUsers();
+        },
         async getUsers(){
             const res = await axios.get('http://localhost:5000/api/users');
             this.users = res.data;
